@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-
+import { forecast } from "./routes/forecast";
 
 export class App {
 
@@ -14,6 +14,9 @@ export class App {
     }
 
     private routes(): void {
+
+        this.app.use("/weather", forecast);
+
         // route for testing connection
         this.app.get("/ping", (_req: Request, res: Response): void => {
             try {
@@ -24,10 +27,6 @@ export class App {
                 return;
             }
         });
-
-
-
-
     }
 
     public serverStart(PORT: number) {
