@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import { forecast } from "./routes/forecast";
+import { forecast, history } from "./routes";
 
 export class App {
 
@@ -16,6 +16,8 @@ export class App {
     private routes(): void {
 
         this.app.use("/weather", forecast);
+
+        this.app.use("/history", history);
 
         // route for testing connection
         this.app.get("/ping", (_req: Request, res: Response): void => {
