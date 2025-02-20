@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 history.get("/", async (req: Request, res: Response) => {
     try {
         const data = await prisma.history.findMany();
-        res.status(200).json(data);
+        res.status(200).json(data.sort((a, b) => (b.id - a.id)));
         return;
     } catch (error) {
         res.status(500).send({ error: "" });
