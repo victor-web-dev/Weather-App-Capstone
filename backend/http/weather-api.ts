@@ -1,4 +1,4 @@
-// import "dotenv/config";
+import "dotenv/config";
 // import axios from "axios";
 
 // const { WEATHER_API_FORECAST, KEY } = process.env
