@@ -25,7 +25,7 @@ export class App {
                 res.status(200).send("pong");
                 return;
             } catch (error) {
-                res.status(404).send("Not found");
+                res.status(500).send("Not found");
                 return;
             }
         });
