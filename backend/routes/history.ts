@@ -35,7 +35,17 @@ history.post("/save", async (req: Request, res: Response) => {
     }
 });
 
-history.delete("/delete/:id", (req: Request, res: Response) => { });
+history.delete("/delete/:id", async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        await prisma.history.delete({ where: { id: Number(id) } })
+        res.status(204).send();
+        return;
+    } catch (error) {
+        res.status(500).send({ error: "" });
+        return;
+    }
+});
 
 
 
