@@ -4,8 +4,9 @@ import bkgVideo from "./assets/video/video.mp4";
 import axios, { AxiosError } from "axios";
 import { IForecastMinimal } from "./types/api.types";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CardWeather } from "./components/CardWeather";
+import { History } from "./components/History";
 
 function App() {
 
@@ -36,11 +37,11 @@ function App() {
     }
   }
 
-  const checkSearchInputMinChar = (): boolean => {
+  const checkSearchInputMinChar = useCallback((): boolean => {
     return searchInput.length >= 3;
-  }
+  }, [searchInput.length]);
 
-  const handleEnterKey = (event: KeyboardEvent) => {
+  const handleEnterKey = useCallback((event: KeyboardEvent) => {
 
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -48,8 +49,16 @@ function App() {
       if (checkSearchInputMinChar()) {
         handleApiCall(searchInput);
       }
-
     }
+  }, [checkSearchInputMinChar, searchInput]);
+
+  const handleSubmitBtn = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (checkSearchInputMinChar()) {
+      handleApiCall(searchInput);
+      return;
+    }
+    return;
   }
 
   useEffect(() => {
@@ -64,7 +73,7 @@ function App() {
       window.removeEventListener('keydown', handleEnterKey);
     }
 
-  }, [searchInput]);
+  }, [handleEnterKey, searchInput]);
 
   return (
     <>
@@ -82,7 +91,7 @@ function App() {
                 <h1 className="text-white text-7xl pb-4">City <span className="text-transparent bg-gradient-to-r from-blue-500 to-white bg-clip-text">Weather</span></h1>
               </div>
               <div>
-                <form className="text-center">
+                <form onSubmit={handleSubmitBtn} className="text-center">
                   <input type="text" id="search-input" value={searchInput} onChange={handleInputChange} placeholder='City name...' className="px-10 py-3 border-none outline-0  rounded-xl bg-white sm:w-lg md:w-2xl lg:w-4xl" />
                   <button type="submit" className="cursor-pointer p-4">
                     <img src={searchIcon} alt="search icon" className="" />
@@ -98,7 +107,7 @@ function App() {
             </div>
           </section>
           <section id="city-weather-history">
-            {/* here goes the city weather for next 3 days */}
+            <History />
           </section>
         </div>
       </main>
