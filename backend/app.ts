@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import { forecast, history } from "./routes";
+import cors from "cors";
 
 export class App {
 
@@ -9,6 +10,7 @@ export class App {
 
         this.app = express();
         this.app.use(express.json());
+        this.app.use(cors());
 
         this.routes();
     }
